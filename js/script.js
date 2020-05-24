@@ -1,8 +1,8 @@
 "use strict";
 var ctx, canvas;
 
-var depth = 11,
-    branchSize = 5,
+var depth = 16,
+    branchSize = 6,
     branchAngle = 20,
     deg_to_rad = Math.PI / 180.0;
 
