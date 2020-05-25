@@ -31,9 +31,9 @@ function drawTree(depth, branchAngle) {
       return;
     }
 
+    // extend each branch at this depth
     for (var i = 0; i < drawingProgress[currentBranch].length; i++) {
       let branchNode = drawingProgress[currentBranch][i];
-
       if (!branchNode.isComplete) {
         if (branchNode.length - branchNode.lengthDrawn <= branchNode.growthSpeed) {
           branchNode.lengthDrawn = branchNode.length;
