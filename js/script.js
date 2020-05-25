@@ -20,11 +20,14 @@ function drawTree(depth, branchAngle) {
   let currentBranch = 0;
 
   let myInterval = setInterval(() => {
+    
+    // redraw tree if entire depth is drawn
     if (currentBranch >= entireTree.length) {
       reset(myInterval, 1000);
       return;
     }
 
+    // move to next branch level
     let branchLevelComplete = isBranchLevelComplete(currentBranch, drawingProgress);
     if (branchLevelComplete) {
       currentBranch += 1;
@@ -51,11 +54,9 @@ function drawTree(depth, branchAngle) {
 
 function buildTree(treeDepth, branchAngle) {
   let allBranches = [];
-  for (var seed = 0; seed < treeDepth; seed++) {
-    allBranches.push([]);
-  };
 
   for (var currentBranch = 0; currentBranch < treeDepth; currentBranch++) {
+    allBranches.push([]);
     if (currentBranch == 0) {
       let firstBranch = 
         {
