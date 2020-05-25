@@ -11,7 +11,7 @@ var depth = 20,
   branchSize = 3,
   startBranchAngle = 50,
   deg_to_rad = Math.PI / 180.0,
-  startPt = {x: canvas.width / 2, y: canvas.height},
+  startPt = {x: canvas.width/2, y: canvas.height},
   startAngle = -95;
 
 function drawTree(depth, branchAngle) {
@@ -34,9 +34,18 @@ function drawTree(depth, branchAngle) {
 
     for (var i = 0; i < drawingProgress[currentBranch].length; i++) {
       let branchNode = drawingProgress[currentBranch][i];
-      branchNode.lengthDrawn += branchNode.growthSpeed;
-      let nextPoint = pointFromSlopeLength(branchNode.coords, branchNode.slope, branchNode.lengthDrawn);
-      drawLine(branchNode.coords.x1, branchNode.coords.y1, nextPoint.x, nextPoint.y);
+
+      if (!branchNode.isComplete) {
+        if (branchNode.length - branchNode.lengthDrawn <= branchNode.growthSpeed) {
+          branchNode.lengthDrawn = branchNode.length;
+          branchNode.isComplete = true;
+        } else {
+          branchNode.lengthDrawn += branchNode.growthSpeed;
+        }
+
+        let nextPoint = pointFromSlopeLength(branchNode.coords, branchNode.slope, branchNode.lengthDrawn);
+        drawLine(branchNode.coords.x1, branchNode.coords.y1, nextPoint.x, nextPoint.y);
+      }
     }
   }, 1);
 }
@@ -120,6 +129,7 @@ function populateProgressArray(entireTree) {
         },
         growthSpeed: 2 + (2 * Math.random()),
         lengthDrawn: 0,
+        isComplete: false,
       };
       drawingProgress[i].push(branch);
     }
@@ -137,8 +147,8 @@ function reset(interval, depth, waitTime) {
 
 function isBranchLevelComplete(currentBranch, drawingProgress) {
   for (var i = 0; i < drawingProgress[currentBranch].length; i++) {
-    if (drawingProgress[currentBranch][i].lengthDrawn < drawingProgress[currentBranch][i].length) {
-      return false
+    if (!drawingProgress[currentBranch][i].isComplete) {
+      return false;
     }
   }
   return true;
