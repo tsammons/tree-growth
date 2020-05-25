@@ -5,7 +5,7 @@ ctx = myCanvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 ctx.lineWidth = 1;
-ctx.strokeStyle = '#7CFC00';
+ctx.strokeStyle = '#00FFFF';
 
 var depth = 20,
   branchSize = 3,
