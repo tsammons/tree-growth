@@ -33,10 +33,10 @@ function drawTree(depth, branchAngle) {
     }
 
     for (var i = 0; i < drawingProgress[currentBranch].length; i++) {
-      let node = drawingProgress[currentBranch][i];
-      node.lengthDrawn += node.growthSpeed;
-      let nextPoint = pointFromSlopeLength(node.coords, node.slope, node.lengthDrawn);
-      drawLine(node.coords.x1, node.coords.y1, nextPoint.x, nextPoint.y);
+      let branchNode = drawingProgress[currentBranch][i];
+      branchNode.lengthDrawn += branchNode.growthSpeed;
+      let nextPoint = pointFromSlopeLength(branchNode.coords, branchNode.slope, branchNode.lengthDrawn);
+      drawLine(branchNode.coords.x1, branchNode.coords.y1, nextPoint.x, nextPoint.y);
     }
   }, 1);
 }
