@@ -16,7 +16,7 @@ var depth = 16,
 
 function drawTree(depth, branchAngle) {
   let entireTree = buildTree(depth, branchAngle);
-  let treeProgress = populateProgressArray(entireTree);
+  let drawingProgress = populateProgressArray(entireTree);
   let currentBranch = 0;
 
   let myInterval = setInterval(() => {
@@ -24,19 +24,19 @@ function drawTree(depth, branchAngle) {
       clearInterval(myInterval);
       setTimeout(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawTree(depth, 15 + Math.floor(40 * Math.random()));
-      }, 2500);
+        drawTree(depth, 25 + Math.floor(10 * Math.random()));
+      }, 1000);
       return;
     }
 
-    let branchesComplete = areBranchesComplete(currentBranch, treeProgress);
-    if (branchesComplete) {
+    let branchLevelComplete = isBranchLevelComplete(currentBranch, drawingProgress);
+    if (branchLevelComplete) {
       currentBranch += 1;
       return;
     }
 
-    for (var i = 0; i < treeProgress[currentBranch].length; i++) {
-      let node = treeProgress[currentBranch][i];
+    for (var i = 0; i < drawingProgress[currentBranch].length; i++) {
+      let node = drawingProgress[currentBranch][i];
       node.lengthDrawn += node.growthSpeed;
       let nextPoint = pointFromSlopeLength(node.coords, node.slope, node.lengthDrawn);
       drawLine(node.coords.x1, node.coords.y1, nextPoint.x, nextPoint.y);
@@ -60,8 +60,8 @@ function buildTree(treeDepth, branchAngle) {
             y: startPt.y
           },
           end: {
-            x: startPt.x + getNextX(startAngle, treeDepth-currentBranch),
-            y: startPt.y + getNextY(startAngle, treeDepth-currentBranch)
+            x: startPt.x + getNextX(startAngle, currentBranch, treeDepth),
+            y: startPt.y + getNextY(startAngle, currentBranch, treeDepth)
           }
         };
       allBranches[currentBranch].push(firstBranch);
@@ -75,8 +75,8 @@ function buildTree(treeDepth, branchAngle) {
           angle: angleA,
           start: parentBranch.end,
           end: {
-            x: parentBranch.end.x + getNextX(angleA, treeDepth - currentBranch),
-            y: parentBranch.end.y + getNextY(angleA, treeDepth - currentBranch)
+            x: parentBranch.end.x + getNextX(angleA, currentBranch, treeDepth),
+            y: parentBranch.end.y + getNextY(angleA, currentBranch, treeDepth)
           }
         };
 
@@ -85,8 +85,8 @@ function buildTree(treeDepth, branchAngle) {
           angle: angleB,
           start: parentBranch.end,
           end: {
-            x: parentBranch.end.x + getNextX(angleB, treeDepth - currentBranch),
-            y: parentBranch.end.y + getNextY(angleB, treeDepth - currentBranch)
+            x: parentBranch.end.x + getNextX(angleB, currentBranch, treeDepth),
+            y: parentBranch.end.y + getNextY(angleB, currentBranch, treeDepth)
           }
         };
         if (Math.random() > 0.5) {
@@ -100,9 +100,9 @@ function buildTree(treeDepth, branchAngle) {
 }
 
 function populateProgressArray(entireTree) {
-  let treeProgress = [];
+  let drawingProgress = [];
   for (var i = 0; i < entireTree.length; i++) {
-    treeProgress.push([]);
+    drawingProgress.push([]);
     for (var j = 0; j < entireTree[i].length; j++) {
       let branchNode = entireTree[i][j];
       let branch = {
@@ -117,27 +117,27 @@ function populateProgressArray(entireTree) {
         growthSpeed: 2 + (2 * Math.random()),
         lengthDrawn: 0,
       };
-      treeProgress[i].push(branch);
+      drawingProgress[i].push(branch);
     }
   }
-  return treeProgress;
+  return drawingProgress;
 }
 
-function areBranchesComplete(currentBranch, treeProgress) {
-  for (var i = 0; i < treeProgress[currentBranch].length; i++) {
-    if (treeProgress[currentBranch][i].lengthDrawn < treeProgress[currentBranch][i].length) {
+function isBranchLevelComplete(currentBranch, drawingProgress) {
+  for (var i = 0; i < drawingProgress[currentBranch].length; i++) {
+    if (drawingProgress[currentBranch][i].lengthDrawn < drawingProgress[currentBranch][i].length) {
       return false
     }
   }
   return true;
 }
 
-function getNextX(angle, depth) {
-  return Math.cos(angle * deg_to_rad) * depth * branchSize;
+function getNextX(angle, currentDepth, depth) {
+  return Math.cos(angle * deg_to_rad) * branchSize * (depth - currentDepth);
 }
 
-function getNextY(angle, depth) {
-  return Math.sin(angle * deg_to_rad) * depth * branchSize;
+function getNextY(angle, currentDepth, depth) {
+  return Math.sin(angle * deg_to_rad) * branchSize * (depth - currentDepth);
 }
 
 function getSlope(branchNode) {
