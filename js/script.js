@@ -7,8 +7,8 @@ canvas.height = window.innerHeight;
 ctx.lineWidth = 1;
 ctx.strokeStyle = '#7CFC00';
 
-var depth = 16,
-  branchSize = 6,
+var depth = 20,
+  branchSize = 3,
   startBranchAngle = 50,
   deg_to_rad = Math.PI / 180.0,
   startPt = {x: canvas.width / 2, y: canvas.height},
@@ -21,7 +21,7 @@ function drawTree(depth, branchAngle) {
 
   let myInterval = setInterval(() => {
     if (currentBranch >= entireTree.length) {
-      reset(myInterval, depth, 1000);
+      reset(myInterval, 15 + (Math.floor(15 * Math.random())), 1000);
       return;
     }
 
@@ -86,9 +86,16 @@ function buildTree(treeDepth, branchAngle) {
           }
         };
         if (Math.random() > 0.5) {
+          if (Math.random() > 0.5) {
+            allBranches[currentBranch].push(childBranchA);
+          }
+          allBranches[currentBranch].push(childBranchB);
+        } else {
           allBranches[currentBranch].push(childBranchA);
+          if (Math.random() > 0.5) {
+            allBranches[currentBranch].push(childBranchB);
+          }
         }
-        allBranches[currentBranch].push(childBranchB);
       }
     }
   }
