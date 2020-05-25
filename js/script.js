@@ -12,6 +12,7 @@ function init() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     ctx.lineWidth = 1;
+    ctx.strokeStyle = '#7CFC00';
     drawTree(depth);
 }
 
@@ -73,7 +74,7 @@ function buildTree(numberOfBreaks) {
 
     for (var i = 0; i < numberOfBreaks; i++) {
         if (i == 0) {
-            let startAngle = -75;
+            let startAngle = -95;
             let startX = canvas.width / 2;
             let startY = canvas.height;
             let newBranch = 
