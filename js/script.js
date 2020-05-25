@@ -21,8 +21,7 @@ function drawTree(depth, branchAngle) {
 
   let myInterval = setInterval(() => {
     if (currentBranch >= entireTree.length) {
-      let semiRandomDepth = 15 + (Math.floor(15 * Math.random()));
-      reset(myInterval, semiRandomDepth, 1000);
+      reset(myInterval, 1000);
       return;
     }
 
@@ -137,11 +136,12 @@ function populateProgressArray(entireTree) {
   return drawingProgress;
 }
 
-function reset(interval, depth, waitTime) {
+function reset(interval, waitTime) {
   clearInterval(interval);
   setTimeout(() => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTree(depth, 25 + Math.floor(10 * Math.random()));
+    let semiRandomDepth = 15 + (Math.floor(15 * Math.random()));
+    drawTree(semiRandomDepth, 25 + Math.floor(10 * Math.random()));
   }, waitTime);
 }
 
