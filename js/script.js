@@ -21,7 +21,8 @@ function drawTree(depth, branchAngle) {
 
   let myInterval = setInterval(() => {
     if (currentBranch >= entireTree.length) {
-      reset(myInterval, 15 + (Math.floor(15 * Math.random())), 1000);
+      let semiRandomDepth = 15 + (Math.floor(15 * Math.random()));
+      reset(myInterval, semiRandomDepth, 1000);
       return;
     }
 
