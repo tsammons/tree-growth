@@ -21,11 +21,7 @@ function drawTree(depth, branchAngle) {
 
   let myInterval = setInterval(() => {
     if (currentBranch >= entireTree.length) {
-      clearInterval(myInterval);
-      setTimeout(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawTree(depth, 25 + Math.floor(10 * Math.random()));
-      }, 1000);
+      reset(myInterval, depth, 1000);
       return;
     }
 
@@ -121,6 +117,14 @@ function populateProgressArray(entireTree) {
     }
   }
   return drawingProgress;
+}
+
+function reset(interval, depth, waitTime) {
+  clearInterval(interval);
+  setTimeout(() => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawTree(depth, 25 + Math.floor(10 * Math.random()));
+  }, waitTime);
 }
 
 function isBranchLevelComplete(currentBranch, drawingProgress) {
