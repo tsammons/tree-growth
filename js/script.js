@@ -1,8 +1,8 @@
 "use strict";
 var ctx, canvas;
 
-var depth = 11,
-    branchSize = 5,
+var depth = 16,
+    branchSize = 6,
     branchAngle = 20,
     deg_to_rad = Math.PI / 180.0;
 
@@ -97,7 +97,9 @@ function buildTree(numberOfBreaks) {
                     start: parentBranch.end,
                     end: [parentBranch.end[0] + getSecondX(parentBranch.angle + (branchAngle * Math.random()), numberOfBreaks - i), parentBranch.end[1] + getSecondY(parentBranch.angle + (branchAngle * Math.random()), numberOfBreaks - i)],
                 };
-                allBranches[i].push(childBranchA);
+                if (Math.random() > 0.5) {
+                    allBranches[i].push(childBranchA);
+                }
                 allBranches[i].push(childBranchB);
             }
         }
