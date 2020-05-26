@@ -14,13 +14,36 @@ var depth = 20,
   startPt = {x: canvas.width/2, y: canvas.height},
   startAngle = -95;
 
+var allColors = [
+  "#F7A43E", 
+  "#EA6675", 
+  "#FA425C", 
+  "#6880FF", 
+  "#1AEBFD", 
+  "#76E707", 
+  "#E54B11", 
+  "#79CEBB", 
+  "#1AD75E", 
+  "#EC0180", 
+  "#72BA8F", 
+  "#66F098", 
+  "#0EE68C", 
+  "#AB6229",
+  "#F0D2EB",
+  "#A405FB",
+  "#78C464",
+  "#BFE0F4",
+];
+
 function drawTree(depth, branchAngle) {
   let entireTree = buildTree(depth, branchAngle);
   let drawingProgress = populateProgressArray(entireTree);
   let currentBranch = 0;
 
+  let newColorIndex = Math.floor(Math.random() * allColors.length);
+  ctx.strokeStyle = allColors[newColorIndex];
+
   let myInterval = setInterval(() => {
-    
     // redraw tree if entire depth is drawn
     if (currentBranch >= entireTree.length) {
       reset(myInterval, 1000);
@@ -192,5 +215,13 @@ function drawLine(x1, y1, x2, y2){
   ctx.stroke();
 }
 
-drawTree(depth, startBranchAngle);
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
+drawTree(depth, startBranchAngle);
