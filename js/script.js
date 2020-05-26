@@ -12,7 +12,9 @@ var depth = 20,
   startBranchAngle = 50,
   deg_to_rad = Math.PI / 180.0,
   startPt = {x: canvas.width/2, y: canvas.height},
-  startAngle = -95;
+  startAngle = -95,
+  maxTrees = 5,
+  currentTrees = 1;
 
 var allColors = [
   "#F7A43E", 
@@ -46,7 +48,7 @@ function drawTree(depth, branchAngle) {
   let myInterval = setInterval(() => {
     // redraw tree if entire depth is drawn
     if (currentBranch >= entireTree.length) {
-      reset(myInterval, 1000);
+      reset(myInterval, 50);
       return;
     }
 
@@ -80,16 +82,17 @@ function buildTree(treeDepth, branchAngle) {
 
   for (var currentBranch = 0; currentBranch < treeDepth; currentBranch++) {
     allBranches.push([]);
+    let test = canvas.width * Math.random();
     if (currentBranch == 0) {
       let firstBranch = 
         {
           angle: startAngle,
           start: {
-            x: startPt.x, 
+            x: test, 
             y: startPt.y
           },
           end: {
-            x: startPt.x + getNextX(startAngle, currentBranch, treeDepth),
+            x: test + getNextX(startAngle, currentBranch, treeDepth),
             y: startPt.y + getNextY(startAngle, currentBranch, treeDepth)
           }
         };
@@ -161,9 +164,13 @@ function populateProgressArray(entireTree) {
 }
 
 function reset(interval, waitTime) {
+  currentTrees += 1;
   clearInterval(interval);
   setTimeout(() => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (currentTrees > maxTrees) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      currentTrees = 0;
+    }
     let semiRandomDepth = 15 + (Math.floor(15 * Math.random()));
     drawTree(semiRandomDepth, 25 + Math.floor(10 * Math.random()));
   }, waitTime);
