@@ -84,10 +84,7 @@ function buildTree(treeDepth, branchAngle) {
       let firstBranch = 
         {
           angle: startAngle,
-          start: {
-            x: startPt.x, 
-            y: startPt.y
-          },
+          start: { x: startPt.x, y: startPt.y },
           end: getNextPoint(startPt, startAngle, currentBranch, treeDepth),
         };
       allBranches[currentBranch].push(firstBranch);
