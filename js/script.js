@@ -44,20 +44,20 @@ function drawTree(depth, branchAngle) {
   ctx.strokeStyle = allColors[newColorIndex];
 
   let myInterval = setInterval(() => {
-    // redraw tree if entire depth is drawn
+    // redraw if complete
     if (currentBranch >= entireTree.length) {
       reset(myInterval, 1000);
       return;
     }
 
-    // move to next branch level
+    // next branch
     let branchLevelComplete = isBranchLevelComplete(currentBranch, drawingProgress);
     if (branchLevelComplete) {
       currentBranch += 1;
       return;
     }
 
-    // extend each branch at this depth
+    // extend each branch
     for (var i = 0; i < drawingProgress[currentBranch].length; i++) {
       let branchNode = drawingProgress[currentBranch][i];
       if (!branchNode.isComplete) {
