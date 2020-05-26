@@ -88,10 +88,7 @@ function buildTree(treeDepth, branchAngle) {
             x: startPt.x, 
             y: startPt.y
           },
-          end: {
-            x: startPt.x + getNextX(startAngle, currentBranch, treeDepth),
-            y: startPt.y + getNextY(startAngle, currentBranch, treeDepth)
-          }
+          end: getNextPoint(startPt, startAngle, currentBranch, treeDepth),
         };
       allBranches[currentBranch].push(firstBranch);
     } else {
@@ -103,20 +100,14 @@ function buildTree(treeDepth, branchAngle) {
         let childBranchA = {
           angle: angleA,
           start: parentBranch.end,
-          end: {
-            x: parentBranch.end.x + getNextX(angleA, currentBranch, treeDepth),
-            y: parentBranch.end.y + getNextY(angleA, currentBranch, treeDepth)
-          }
+          end: getNextPoint(parentBranch.end, angleA, currentBranch, treeDepth),
         };
 
         let angleB = parentBranch.angle + (branchAngle * Math.random());
         let childBranchB = {
           angle: angleB,
           start: parentBranch.end,
-          end: {
-            x: parentBranch.end.x + getNextX(angleB, currentBranch, treeDepth),
-            y: parentBranch.end.y + getNextY(angleB, currentBranch, treeDepth)
-          }
+          end: getNextPoint(parentBranch.end, angleB, currentBranch, treeDepth),
         };
         if (Math.random() > 0.5) {
           if (Math.random() > 0.5) {
@@ -178,12 +169,11 @@ function isBranchLevelComplete(currentBranch, drawingProgress) {
   return true;
 }
 
-function getNextX(angle, currentDepth, depth) {
-  return Math.cos(angle * deg_to_rad) * branchSize * (depth - currentDepth);
-}
-
-function getNextY(angle, currentDepth, depth) {
-  return Math.sin(angle * deg_to_rad) * branchSize * (depth - currentDepth);
+function getNextPoint(endPt, angle, currentDepth, depth) {
+  return {
+    x: endPt.x + Math.cos(angle * deg_to_rad) * branchSize * (depth - currentDepth),
+    y: endPt.y + Math.sin(angle * deg_to_rad) * branchSize * (depth - currentDepth)
+  };
 }
 
 function getSlope(branchNode) {
