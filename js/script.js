@@ -4,7 +4,8 @@ canvas = document.getElementById('myCanvas');
 ctx = myCanvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-ctx.lineWidth = 1;
+ctx.lineWidth = 20;
+ctx.lineCap = "round";
 ctx.strokeStyle = '#00FFFF';
 
 var depth = 20,
@@ -12,7 +13,9 @@ var depth = 20,
   startBranchAngle = 50,
   deg_to_rad = Math.PI / 180.0,
   startPt = {x: canvas.width/2, y: canvas.height},
-  startAngle = -95;
+  startAngle = -95,
+  lineWidth = 1,
+  lineDecay = 2;
 
 var allColors = [
   "#F7A43E", 
@@ -54,6 +57,7 @@ function drawTree(depth, branchAngle) {
     let branchLevelComplete = isBranchLevelComplete(currentBranch, drawingProgress);
     if (branchLevelComplete) {
       currentBranch += 1;
+      lineWidth = Math.max(lineWidth - lineDecay, 1);
       return;
     }
 
@@ -153,6 +157,7 @@ function reset(interval, waitTime) {
   setTimeout(() => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let semiRandomDepth = 15 + (Math.floor(15 * Math.random()));
+    lineWidth = semiRandomDepth;
     drawTree(semiRandomDepth, 25 + Math.floor(10 * Math.random()));
   }, waitTime);
 }
@@ -196,6 +201,7 @@ function pointFromSlopeLength(coords, slope, length) {
 }
 
 function drawLine(x1, y1, x2, y2){
+  ctx.lineWidth = lineWidth;
   ctx.beginPath();
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
